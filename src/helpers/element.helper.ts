@@ -29,10 +29,11 @@ export function createElement(type: string) {
     case ElementsEnum.Input:
       const input = document.createElement("input");
       input.setAttribute("type", "text");
+      input.setAttribute("placeholder", "enter text");
       return input;
     case ElementsEnum.Text:
       const div = document.createElement("div");
-      div.innerText = "Your Sample Text";
+      div.innerText = "Div With Sample Prefilled Text";
       return div;
     default:
       return;

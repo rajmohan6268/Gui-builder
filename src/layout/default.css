@@ -9,26 +9,21 @@
 }
 
 .side-panel {
-  grid-area: side; /* Place the side panel in the 'side' grid area */
-  padding: 20px 0px;
+  grid-area: side; 
   border-right: 0.5px #555454 solid;
-  box-sizing: border-box;
-  text-align: center;
+
+  @apply  text-center   box-border px-[20x] py-2
 }
 
 .playground {
-  grid-area: playground; /* Place the playground area in the 'playground' grid area */
-  padding: 20px;
-  text-align: center;
-  box-sizing: border-box;
+  grid-area: playground; 
+  @apply p-4 text-center box-border
 }
 
 .right-panel {
-  grid-area: right; /* Place the right panel in the 'right' grid area */
-  padding: 10px;
+  grid-area: right; 
   border-left: 0.5px #555454 solid;
-  box-sizing: border-box;
-  text-align: center;
+  @apply p-[10px] text-center box-border
 }
 
 
@@ -45,7 +40,6 @@
   border: 0.5px solid #555454;
   padding: 5px;
   cursor: pointer;
-  background-color: #242424;
 }
 
 .playground .ui-container {
