@@ -1,4 +1,7 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import DefaultLayout from './layout/default';
+import LeftPanel from './components/left-panel';
+import Playground from './components/playground';
 
 
 function App() {
@@ -6,7 +9,11 @@ function App() {
   },[])
   return (
     <>
-    <div className='w-full  text-center'> react gui builder page</div>
+       <DefaultLayout
+        sidePanel={<LeftPanel />}
+        playground={<Playground />}
+        // rightPanel={<RightPanel />}
+      />
     </>
   );
 }
