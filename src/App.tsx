@@ -6,7 +6,7 @@ function App() {
   },[])
   return (
     <>
-     App page
+    <div className='w-full  text-center'> react gui builder page</div>
     </>
   );
 }
