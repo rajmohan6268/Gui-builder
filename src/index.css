@@ -18,6 +18,14 @@ input{
  @apply border border-black focus:outline text-black !px-3 !py-2
 }
 
+textarea{
+  @apply border border-black focus:outline text-black !px-3 !py-2
+ }
+ select{
+  @apply border border-black focus:outline text-black !px-3 !py-2
+ }
+
+ 
 button {
   @apply border border-black focus:outline  !px-3 !py-2 ;
 }

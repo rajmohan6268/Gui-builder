@@ -214,7 +214,10 @@ function Playground() {
     <>
       <div className=" font-bold text-[#5eabcb] py-4">
         GUI Builder
-        <div className="text-sm float-right text-gray-300"> {lastSavedOn?'Last saved On:':''} {lastSavedOn}</div>
+        <div className="text-sm float-right text-gray-300">
+          {" "}
+          {lastSavedOn ? "Last saved On:" : ""} {lastSavedOn}
+        </div>
       </div>
       <div
         className="ui-container"
