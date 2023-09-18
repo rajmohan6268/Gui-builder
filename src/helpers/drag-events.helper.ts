@@ -71,8 +71,12 @@ export function dropEvent(
 ) {
   if (event) {
     event.preventDefault();
+
     const status = event.dataTransfer.getData(dragStatus);
     const elementType = event.dataTransfer.getData(dragElement);
+
+    console.log({ status, elementType });
+
     if (status === "dragging" && elementType) {
       const element = createElement(elementType);
       if (!element) return;
@@ -97,6 +101,13 @@ export function dropEvent(
       if (absolute) {
         updateElementEvents(element, rect);
       }
+
+      return {
+        left: element.style.left,
+        top: element.style.top,
+        elementType,
+        positionType: absolute ? "absolute" : "static",
+      };
     }
   }
 }
