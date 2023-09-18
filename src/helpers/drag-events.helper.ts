@@ -54,6 +54,7 @@ export function updateElementEvents(
 
     // Move  while dragging
     function moveElement(e: MouseEvent) {
+      console.log({ e }, "@moveElement");
       if (!isDragging || !element) return;
 
       const x = e.clientX - offsetX - rect.left;

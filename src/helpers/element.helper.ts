@@ -185,20 +185,12 @@ export function createElement(type: string) {
       option0.text = "Select option";
       option0.disabled = true;
       select.appendChild(option0);
-      const option1 = document.createElement("option");
-      option1.value = "1";
-      option1.text = "Option 1";
-      select.appendChild(option1);
-
-      const option2 = document.createElement("option");
-      option2.value = "2";
-      option2.text = "Option 2";
-      select.appendChild(option2);
-
-      const option3 = document.createElement("option");
-      option3.value = "3";
-      option3.text = "Option 3";
-      select.appendChild(option3);
+      for (let i = 1; i <= 3; i++) {
+        const option = document.createElement("option");
+        option.value = String(i);
+        option.text = `Option ${i}`;
+        select.appendChild(option);
+      }
 
       return select;
 
