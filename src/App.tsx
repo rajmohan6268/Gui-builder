@@ -12,7 +12,6 @@ function App() {
        <DefaultLayout
         sidePanel={<LeftPanel />}
         playground={<Playground />}
-        // rightPanel={<RightPanel />}
       />
     </>
   );

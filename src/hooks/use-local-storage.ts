@@ -41,8 +41,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }
   };
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const elements = document.querySelectorAll(".draggable");
     const elementData: IStoredElement[] = [];
 
@@ -57,7 +56,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     });
 
     setStoredValue(elementData as SetStateAction<T>);
-  },[])
+  }, []);
 
   return [storedValue, setValue, removeValue] as const;
 }
