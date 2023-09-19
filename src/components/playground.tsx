@@ -8,6 +8,7 @@ import {
 import { useLocalStorage } from "../hooks/use-local-storage";
 import { createElement } from "../helpers/element.helper";
 import React from "react";
+import toast, { Toaster } from "react-hot-toast";
 const storageKey = "@-playground";
 const absoluteStorageKey = "@-absoulte";
 
@@ -84,6 +85,8 @@ function Playground() {
 
     SetlastSavedOn(formattedDate);
     SetisToBeSave(true);
+
+    toast.success("Saved!");
   };
 
   useEffect(() => {
@@ -135,6 +138,7 @@ function Playground() {
     localStorage.clear();
     SetlastSavedOn("");
     setStoredElements([]);
+    toast.success("cleared!");
   };
 
   const onChangePosition = (
@@ -210,11 +214,12 @@ function Playground() {
 
     console.log({ storedElements }, "@storedElements@");
   }, [storedElements]);
+
   return (
     <>
-      <div className=" font-bold text-[#5eabcb] py-4">
+      <div className=" font-bold relative  justify-center flex items-center text-[#5eabcb] py-4">
         GUI Builder
-        <div className="text-sm float-right text-gray-300">
+        <div className="text-sm absolute right-10 text-gray-300">
           {" "}
           {lastSavedOn ? "Last saved On:" : ""} {lastSavedOn}
         </div>
@@ -301,6 +306,7 @@ function Playground() {
           Save
         </button>
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }
