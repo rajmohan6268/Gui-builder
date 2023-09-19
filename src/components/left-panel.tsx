@@ -1,9 +1,13 @@
 import { UI_ELEMENTS } from "../helpers/element.helper";
 import { dragStart } from "../helpers/drag-events.helper";
 import React from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 function LeftPanel() {
   const elementlist = [...UI_ELEMENTS];
+
+
+
   return (
     <>
       <div className="sticky top-0 bg-white z-10 border-b border-gray-100">
@@ -19,7 +23,7 @@ function LeftPanel() {
           <div
             className="list-item"
             draggable={true}
-            onDragStart={(e) => dragStart(e, elem.type)}
+            onDragStart={(e) => dragStart(e, elem.type,uuidv4())}
             key={elem.type}
           >
             {elem.label}

@@ -10,6 +10,8 @@ import { useLocalStorage } from "../hooks/use-local-storage";
 import { createElement } from "../helpers/element.helper";
 
 const storageKey = "@-playground";
+const tempstorageKey = "@-temp-playground";
+
 const absoluteStorageKey = "@-absolute";
 
 interface IStoredElement {
@@ -17,6 +19,7 @@ interface IStoredElement {
   left: string;
   top: string;
   positionType: string;
+  uid: string;
 }
 
 function Playground() {
@@ -62,17 +65,22 @@ function Playground() {
   };
 
   useEffect(() => {
-    const parsedDate = JSON.parse(localStorage.getItem("lastSavedOn") || "null");
+    const parsedDate = JSON.parse(
+      localStorage.getItem("lastSavedOn") || "null"
+    );
     if (parsedDate) {
       setLastSavedOn(parsedDate);
     }
 
-    const parsedPosition = JSON.parse(localStorage.getItem(absoluteStorageKey) || "false");
+    const parsedPosition = JSON.parse(
+      localStorage.getItem(absoluteStorageKey) || "false"
+    );
     setAbsolute(!!parsedPosition);
 
-    const parsedSavedElements = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    const parsedSavedElements = JSON.parse(
+      localStorage.getItem(storageKey) || "[]"
+    );
     setStoredElements(parsedSavedElements);
-
   }, []);
 
   const handleClear = () => {
@@ -114,6 +122,7 @@ function Playground() {
         if (!element) return;
 
         element.setAttribute(dragElement, item.elementType);
+        element.setAttribute("uid", item.uid);
         element.style.position = item.positionType;
         element.style.left = item.left;
         element.style.top = item.top;
@@ -121,8 +130,46 @@ function Playground() {
         updateElementEvents(element, rect);
         playground.appendChild(element);
       });
+
+      localStorage.setItem(tempstorageKey, JSON.stringify(storedElements));
     }
   }, [storedElements]);
+
+  useEffect(() => {
+    const handleonEvementReposition = (event) => {
+      const data = event.detail;
+      const parsedTOBeSavedElements = JSON.parse(
+        localStorage.getItem(tempstorageKey) || "[]"
+      );
+      const { uid, left, top } = data;
+
+      const TobeSaved = parsedTOBeSavedElements?.map((obj) => {
+        if (obj.uid == uid) {
+          return {
+            ...obj,
+            left: left,
+            top: top,
+          };
+        }
+        return obj;
+      });
+      console.log("@@Received custom event:", data, uid, left, top);
+
+      setStoredElements(() => TobeSaved);
+      setIsToBeSaved(false);
+
+      console.log("@@", { storedElements });
+    };
+
+    document.addEventListener("onEvementReposition", handleonEvementReposition);
+
+    return () => {
+      document.removeEventListener(
+        "onEvementReposition",
+        handleonEvementReposition
+      );
+    };
+  }, []);
 
   return (
     <>

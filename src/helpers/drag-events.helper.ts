@@ -1,4 +1,5 @@
 import { createElement } from "./element.helper";
+import { v4 as uuidv4 } from "uuid";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const PLAYGROUND_ID = "";
@@ -8,11 +9,13 @@ export const dragElement = "element-type";
 
 export function dragStart(
   event: React.DragEvent<HTMLDivElement> | undefined,
-  type: string
+  type: string,
+  uid: string
 ) {
   if (event) {
     event.dataTransfer.setData(dragStatus, "dragging");
     event.dataTransfer.setData(dragElement, type);
+    event.dataTransfer.setData("uid", uid);
   }
 }
 
@@ -46,22 +49,49 @@ export function updateElementEvents(
     isDragging = true;
 
     document.addEventListener("mousemove", moveElement);
-    document.addEventListener("mouseup", () => {
+
+
+    document.addEventListener("mouseup", (e) => {
       isDragging = false;
       element.style.cursor = "grab";
+      console.log("@mouseup", e);
+
+      const uid = e?.target?.getAttribute("uid");
+
+      if (uid !== null) {
+        console.log("UID:", uid);
+
+        const x = e.clientX - offsetX - rect.left;
+        const y = e.clientY - offsetY - rect.top;
+
+        const left = (element.style.left = x + "px");
+        const top = (element.style.top = y + "px");
+
+        const customEvent = new CustomEvent("onEvementReposition", {
+          detail: { message: "onEvementReposition", uid, left, top },
+        });
+        document.dispatchEvent(customEvent);
+      }
+
       document.removeEventListener("mousemove", moveElement);
     });
 
-    // Move  while dragging
-    function moveElement(e: MouseEvent) {
-      console.log({ e }, "@moveElement");
+    function moveElement(
+      e: MouseEvent
+    ) {
+      console.log({ e }, "@moveElement", { e });
       if (!isDragging || !element) return;
 
       const x = e.clientX - offsetX - rect.left;
       const y = e.clientY - offsetY - rect.top;
 
-      element.style.left = x + "px";
-      element.style.top = y + "px";
+      const left = (element.style.left = x + "px");
+      const top = (element.style.top = y + "px");
+
+      return {
+        left,
+        top,
+      };
     }
   });
 }
@@ -75,13 +105,14 @@ export function dropEvent(
 
     const status = event.dataTransfer.getData(dragStatus);
     const elementType = event.dataTransfer.getData(dragElement);
-
-    console.log({ status, elementType });
+    const elementuid = event.dataTransfer.getData("uid");
+    console.log({ status, elementType, elementuid }, "@dropEvent");
 
     if (status === "dragging" && elementType) {
       const element = createElement(elementType);
       if (!element) return;
       element.setAttribute(dragElement, elementType);
+      element.setAttribute("uid", elementuid);
       const dropTarget = event.currentTarget;
       const rect = dropTarget.getBoundingClientRect();
       const mouseX = event.clientX - rect.left;
@@ -108,6 +139,7 @@ export function dropEvent(
         top: element.style.top,
         elementType,
         positionType: absolute ? "absolute" : "static",
+        uid: elementuid,
       };
     }
   }
